@@ -46,6 +46,7 @@ INSERT INTO restaurants
 (name, address, email, phone, category) VALUES 
 ('The First Class', '1 Georgian Dr', 'tfc@georgiancollege.ca', '7057281968', 'Pub Food');
 
+/* test case-sensitivity of SQL */
 SELECT * FROM restaurants;
 select * from restaurants;
 SELECT * FROM RESTAURANTS;
@@ -58,6 +59,7 @@ INSERT INTO restaurants
 ('Crazy Fox Bistro', '135 Bayfield Street', 4, 'yum@thecrazyfoxbistro.com', '7057375000', 'Fine Dining'),
 ('Side Door Cafe', '89 Bayfield Stree', 4, 'takeout@michaelandmarions.com', '7057211188', 'Fine Dining');
 
+/* use the \ character to escape single quotes inside string values */
 INSERT INTO restaurants
 (name, address, priceRange, email, phone, category) VALUES
 ('Donaleigh\'s Public House', '28 Dunlop Street East', 2, 'pints@donaleighs.ca', '7052527333', 'Pub Food');
@@ -83,3 +85,42 @@ WHERE category <> 'Fine Dining';
 /* all restaurants with an email address */
 SELECT * FROM restaurants
 WHERE email IS NOT NULL;
+
+/* where clause practice */
+SELECT * FROM restaurants WHERE
+name = 'Taj Bistro';
+
+SELECT * FROM restaurants WHERE
+category = 'Japanese'
+AND priceRange = 3;
+
+SELECT * FROM restaurants WHERE
+priceRange < 4;
+
+SELECT * FROM restaurants WHERE
+name <> 'Crazy Fox Bistro';
+
+SELECT * FROM restaurants WHERE
+name != 'Crazy Fox Bistro';
+
+/* LIKE + % is used for partial matches - usually for keyword searches */
+SELECT * FROM restaurants WHERE
+name LIKE 'S%';
+
+SELECT * FROM restaurants WHERE
+priceRange > 1 
+AND priceRange < 4;
+
+/* this fails as 2nd condition is missing a column to evaluate */
+SELECT * FROM restaurants WHERE
+priceRange > 1 AND < 4;
+
+SELECT * FROM restaurants WHERE
+priceRange BETWEEN 2 AND 3;
+
+SELECT * FROM restaurants WHERE
+address LIKE '%Bayfield Street%';
+
+SELECT * FROM restaurants WHERE
+email IS NULL;
+
