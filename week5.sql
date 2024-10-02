@@ -51,3 +51,39 @@ ALTER TABLE customers
 MODIFY address VARCHAR(255) NOT NULL;
 
 DESC customers;
+
+INSERT INTO cuisines (name) VALUES ('    Indian');
+
+SELECT * FROM drivers;
+
+-- STRING Practice w/SELECT queries
+-- 1. last names converted to all uppercase
+SELECT UPPER(lastName) FROM drivers;
+
+-- 2. first names converted to all lowercase
+SELECT LOWER(firstName) FROM drivers;
+
+
+-- 3. first 3 characters of each first name
+SELECT SUBSTR(firstName, 1, 3) FROM drivers;
+
+
+-- 4. length of each last name
+SELECT LENGTH(lastName) FROM drivers;
+
+-- 5. replace department values 'Honda CRV' with 'Honda CR-V'
+SELECT REPLACE(vehicle, 'Honda CRV', 'Honda CR-V') FROM drivers;
+
+-- 5a. UPDATE all instances of Honda CRV => Honda CR-v
+UPDATE drivers
+SET vehicle = REPLACE(vehicle, 'Honda CRV', 'Honda CR-V');
+
+-- 6. all employees whose last names start with 'J'
+SELECT lastName FROM drivers
+WHERE INSTR(lastName, 'J') = 1;
+
+SELECT lastName FROM drivers
+WHERE LOCATE('J', lastName) = 1;
+
+SELECT lastName FROM drivers
+WHERE LEFT(lastName, 1) = 'J';
