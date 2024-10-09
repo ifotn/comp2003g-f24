@@ -52,4 +52,17 @@ SELECT * FROM restaurants ORDER BY category;
 
 -- Jamie: restaurants by address
 SELECT * FROM restaurants ORDER BY address;
+
+-- GROUPING function examples
+-- 1. average product price.  use an alias as a friendly column name instead for readability
+SELECT AVG(price) AS averagePrice FROM products;
+
+-- 2. cheapest restaurant
+SELECT MIN(priceRange) AS cheapest, name FROM restaurants GROUP BY name HAVING cheapest < 3 ;
+
+-- 3. most expensive product
+SELECT name, MAX(price) AS mostExpensive FROM products GROUP BY name ORDER BY mostExpensive DESC LIMIT 1;
+
+-- 4. how many drivers have a Mazda 3
+SELECT COUNT(vehicle) AS driverCount FROM drivers WHERE vehicle = 'Mazda 3';
  
