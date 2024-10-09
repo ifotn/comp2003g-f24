@@ -91,3 +91,10 @@ SELECT restaurant, SUM(total) as totalRevenue FROM orders GROUP BY restaurant OR
 
 -- 5. The most recent order?
 SELECT MAX(orderDate) AS mostRecent, orderId FROM Orders GROUP BY orderId LIMIT 1;
+
+-- HAVING practice - using filters on GROUPS
+-- 1. Total number of orders per restaurant where the total number of orders is more than 3 
+SELECT restaurant, COUNT(orderId) AS orderCount 
+FROM orders 
+GROUP BY restaurant
+HAVING orderCount > 3;
