@@ -65,4 +65,29 @@ SELECT name, MAX(price) AS mostExpensive FROM products GROUP BY name ORDER BY mo
 
 -- 4. how many drivers have a Mazda 3
 SELECT COUNT(vehicle) AS driverCount FROM drivers WHERE vehicle = 'Mazda 3';
- 
+
+-- GROUPING practice
+-- 1. How many drivers have a Honda?
+SELECT COUNT(vehicle) AS driverCount 
+FROM drivers
+WHERE vehicle LIKE '%Honda%';
+
+-- confirm answer
+SELECT * FROM drivers WHERE vehicle LIKE '%Honda%';
+
+-- 2. How many restaurants are in each category?
+SELECT category, COUNT(category) AS restaurantCount FROM restaurants GROUP BY category;
+
+-- 3. How many orders are there for each restaurant?
+SELECT restaurant, COUNT(orderId) AS orderCount 
+FROM orders 
+GROUP BY restaurant;
+
+-- 4. What is the total revenue for each restaurant?
+SELECT restaurant, SUM(total) as totalRevenue FROM orders GROUP BY restaurant;
+
+-- 4b. What is the total revenue for each restaurant, from highest earning restaurant to lowest?
+SELECT restaurant, SUM(total) as totalRevenue FROM orders GROUP BY restaurant ORDER BY totalRevenue DESC;
+
+-- 5. The most recent order?
+SELECT MAX(orderDate) AS mostRecent, orderId FROM Orders GROUP BY orderId LIMIT 1;
