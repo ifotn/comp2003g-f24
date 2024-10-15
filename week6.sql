@@ -98,3 +98,28 @@ SELECT restaurant, COUNT(orderId) AS orderCount
 FROM orders 
 GROUP BY restaurant
 HAVING orderCount > 3;
+
+-- 2. Restaurants that have an average order total above $40
+SELECT restaurant, COUNT(orderId) AS orderCount, AVG(total) AS averageOrder 
+FROM orders
+GROUP BY restaurant
+HAVING averageOrder > 40;
+    
+-- 3. Restaurants with more than 2 orders, but only for orders placed after October 10, 2024. Show the count of orders for each restaurant that meets these criteria. 
+SELECT restaurant, COUNT(orderId) AS orderCount
+FROM orders
+WHERE orderDate > '2024-10-10'
+GROUP BY restaurant
+HAVING orderCount > 2;
+
+-- 4. Restaurants whose total sales (sum of all order totals) exceed $200
+SELECT restaurant, SUM(total) AS totalSales
+FROM orders
+GROUP BY restaurant
+HAVING totalSales > 200;
+
+-- 5. Restaurants that have placed between 2 and 5 orders 
+SELECT restaurant, COUNT(orderId) AS orderCount
+FROM orders
+GROUP BY restaurant
+HAVING orderCount BETWEEN 2 AND 5;
