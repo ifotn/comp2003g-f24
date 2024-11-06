@@ -28,4 +28,50 @@ FROM restaurants
 INNER JOIN orders ON restaurants.restaurantId = orders.restaurantId
 INNER JOIN drivers ON orders.driverId = drivers.driverId;
 
+-- extend to 4 tables, adding cuisine name
+SELECT cuisines.name AS cuisine, restaurants.name AS restaurant, orderId, orderDate, total, firstName, lastName
+FROM restaurants
+INNER JOIN orders ON restaurants.restaurantId = orders.restaurantId
+INNER JOIN drivers ON orders.driverId = drivers.driverId
+INNER JOIN cuisines ON restaurants.cuisineId = cuisines.cuisineId;
+
+/* select data from tables in an indirect relationship (great grandparent - child) 
+including intermediate grandparent and parent tables */
+SELECT firstName, lastName, name AS product
+FROM customers
+INNER JOIN orders ON customers.customerId = orders.customerId
+INNER JOIN orderItems ON orders.orderId = orderItems.orderId
+INNER JOIN products ON orderItems.productId = products.productId; 
+
+-- add a few order items
+INSERT INTO orderItems (productId, orderId, quantity, price) VALUES
+(10, 101, 1, 4.99),
+(11, 101, 2, 5.99),
+(12, 101, 3, 8.99),
+(3, 102, 12, 3.00);
+
+-- show all orders, their restaurants and driver if any
+-- LEFT JOIN: show all records on the left side of the equals sign, even when table on right side has no matching records
+SELECT orderId, orderDate, total, restaurants.name AS restaurant, firstName, lastName
+FROM orders
+INNER JOIN restaurants ON orders.restaurantId = restaurants.restaurantId
+LEFT JOIN drivers ON orders.driverId = drivers.driverId;
+
+-- LEFT JOIN / LEFT OUTER JOIN are the same
+SELECT orderId, orderDate, total, restaurants.name AS restaurant, firstName, lastName
+FROM orders
+INNER JOIN restaurants ON orders.restaurantId = restaurants.restaurantId
+LEFT OUTER JOIN drivers ON orders.driverId = drivers.driverId;
+
+-- JOIN practice
+-- 1. Show all restaurants and their related cuisines (names of both only)
+SELECT restaurants.name AS restaurant, cuisines.name AS cuisine
+FROM restaurants
+INNER JOIN cuisines ON cuisines.cuisineId = restaurants.cuisineId;
+
+-- 2. Show how many restaurants there are for each cuisine. Use JOIN and GROUP BY
+SELECT COUNT(restaurantId) AS restaurantCount, cuisines.name AS cuisine
+FROM restaurants
+INNER JOIN cuisines ON cuisines.cuisineId = restaurants.cuisineId
+GROUP BY cuisine;
 
