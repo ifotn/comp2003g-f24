@@ -75,3 +75,43 @@ FROM restaurants
 INNER JOIN cuisines ON cuisines.cuisineId = restaurants.cuisineId
 GROUP BY cuisine;
 
+-- 3. Show the total order revenue for Sakana House North
+SELECT restaurants.name as restaurant, SUM(total) as revenue
+FROM restaurants
+INNER JOIN orders ON orders.restaurantId = restaurants.restaurantId
+WHERE restaurants.name = "Sakana House North";
+ 
+-- 4. Show how many orders were made by each customer, order by first, then last (include all customers)
+-- this almost works, but only shows customers who have made at least 1 order
+SELECT COUNT(orderId) AS orderCount, firstName, lastName 
+FROM orders 
+INNER JOIN customers ON orders.customerId = customers.customerId
+GROUP BY firstName, lastName;
+
+-- use RIGHT JOIN to show all customers (table right of =) even without matching records in left side table
+SELECT COUNT(orderId) AS orderCount, firstName, lastName 
+FROM orders 
+RIGHT JOIN customers ON orders.customerId = customers.customerId
+GROUP BY firstName, lastName;
+
+-- 5. Show the total value delivered by each type of vehicle, even those who haven't many any deliveries
+-- this shows only records with matching values in each table
+SELECT vehicle, SUM(total) AS revenue
+FROM drivers
+INNER JOIN orders ON drivers.driverId = orders.driverId
+GROUP BY vehicle;
+
+-- use an OUTER JOIN instead of INNER to include all vehicles even those never used for an order
+SELECT vehicle, SUM(total) AS revenue
+FROM drivers
+LEFT JOIN orders ON drivers.driverId = orders.driverId
+GROUP BY vehicle;
+
+-- 6. Show the customer who has spent the most money ordering (name and total value of their orders)
+SELECT customers.firstName AS firstName, customers.lastName AS lastName, SUM(orders.total) AS Total
+FROM customers
+INNER JOIN orders ON customers.customerId = orders.customerId
+GROUP BY customers.firstName, customers.lastName
+ORDER BY SUM(orders.total) DESC
+LIMIT 1;
+
