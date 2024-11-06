@@ -51,7 +51,7 @@ INSERT INTO orderItems (productId, orderId, quantity, price) VALUES
 (3, 102, 12, 3.00);
 
 -- show all orders, their restaurants and driver if any
--- LEFT JOIN: show all records on the left side of the equals sign, even when table on right side has no matching records
+-- LEFT JOIN: show all records in table before JOIN even when table after JOIN has no matching records
 SELECT orderId, orderDate, total, restaurants.name AS restaurant, firstName, lastName
 FROM orders
 INNER JOIN restaurants ON orders.restaurantId = restaurants.restaurantId
@@ -88,7 +88,7 @@ FROM orders
 INNER JOIN customers ON orders.customerId = customers.customerId
 GROUP BY firstName, lastName;
 
--- use RIGHT JOIN to show all customers (table right of =) even without matching records in left side table
+-- use RIGHT JOIN to show all customers (table listed before JOIN) even without matching records in left side table
 SELECT COUNT(orderId) AS orderCount, firstName, lastName 
 FROM orders 
 RIGHT JOIN customers ON orders.customerId = customers.customerId
@@ -105,6 +105,11 @@ GROUP BY vehicle;
 SELECT vehicle, SUM(total) AS revenue
 FROM drivers
 LEFT JOIN orders ON drivers.driverId = orders.driverId
+GROUP BY vehicle;
+
+SELECT vehicle, SUM(total) AS revenue
+FROM orders
+LEFT JOIN drivers ON drivers.driverId = orders.driverId
 GROUP BY vehicle;
 
 -- 6. Show the customer who has spent the most money ordering (name and total value of their orders)
