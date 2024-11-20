@@ -59,5 +59,81 @@ WHERE name = 'Sakana House South');
     
     
 -- 5. Restaurants with Total Sales Greater Than $310
+SELECT name, SUM(total) AS totalSales
+FROM orders
+INNER JOIN restaurants ON orders.restaurantId = restaurants.restaurantId
+GROUP BY name
+HAVING SUM(total) > 310;
 
+SELECT name
+FROM restaurants
+WHERE restaurantId IN (SELECT restaurantId FROM orders GROUP BY restaurantId HAVING SUM(total) > 310);
+
+-- Solo Practice:
+-- 1. Customer names who have placed orders
+SELECT orders.customerId
+FROM orders;
+
+SELECT CONCAT(customers.firstName, ' ', customers.lastName) AS name
+FROM customers
+WHERE customers.customerId IN (
+SELECT orders.customerId
+FROM orders);
+ 
+-- 2. Drivers who have not delivered any orders (use NOT IN)
+SELECT CONCAT(drivers.firstName, ' ' , drivers.lastName) AS drivers
+FROM drivers
+WHERE drivers.driverId NOT IN (
+SELECT orders.driverId
+FROM orders
+WHERE driverId IS NOT NULL);
+
+SELECT orders.driverId
+FROM orders
+WHERE driverId IS NOT NULL;
+
+-- 3. Product names that have been ordered at least once (no duplicates)
+SELECT products.name 
+FROM products
+WHERE products.productId IN (
+SELECT products.productId
+FROM products
+INNER JOIN orderItems ON orderitems.productId = products.productId);
+
+SELECT name
+FROM products
+WHERE productId IN (
+	SELECT productId
+    FROM orderItems
+) GROUP BY name;
+
+-- use DISTINCT to remove any duplicates
+SELECT DISTINCT name
+FROM products
+WHERE productId IN (SELECT productId FROM orderItems);
+
+-- 4. Drivers who have picked up orders on Cundles Road
+SELECT CONCAT(drivers.firstName, ' ', drivers.lastName) as driver
+FROM drivers
+WHERE drivers.driverId IN 
+(SELECT driverId 
+FROM orders 
+INNER JOIN restaurants ON restaurants.restaurantId = orders.restaurantId
+WHERE restaurants.address LIKE '%Cundles Road%')
+GROUP BY driver;
+ 
+
+-- 5. Customer name with the highest average order total
+-- subquery first
+SELECT customerId
+FROM ORDERS
+GROUP BY customerId
+ORDER BY AVG(total) DESC LIMIT 1;
+
+SELECT firstName, lastName
+FROM customers
+WHERE customerId = (SELECT customerId
+FROM ORDERS
+GROUP BY customerId
+ORDER BY AVG(total) DESC LIMIT 1);
 
